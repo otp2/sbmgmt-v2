@@ -1,0 +1,32 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[functions]
+  external_node_modules = ["@netlify/functions"]
+  
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+[build.environment]
+  NEXT_USE_NETLIFY_EDGE = "true"
+  NEXT_FORCE_EDGE_IMAGES = "true"
+
+# This section prevents Netlify Forms preprocessing in Next.js
+[build.processing.html]
+  pretty_urls = false
+
+# Forms processing rules
+[build.processing.forms]
+  ignore = [".next/**/*", "node_modules/**/*"]
+
+# Redirect rule for successful form submissions
+[[redirects]]
+  from = "/thank-you"
+  to = "/thank-you"
+  status = 200
+
+[[redirects]]
+  from = "/thank-you-under-21"
+  to = "/thank-you-under-21"
+  status = 200 

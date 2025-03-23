@@ -121,66 +121,72 @@ export default function InterestForm() {
     // In a real application, you would submit this data to your backend or Netlify Forms
     console.log(values)
 
-    // Submit to Netlify Forms
-    const formData = new FormData();
-    // Add form-name field that Netlify requires
-    formData.append('form-name', 'interest-form-over-21');
-    
-    // Add all form values
-    Object.entries(values).forEach(([key, value]) => {
-      formData.append(key, value.toString());
-    });
-    
+    // Submit to Netlify Forms using modern approach
     try {
-      // Submit the form data to Netlify
-      await fetch('/', {
+      // Convert all values to strings to ensure compatibility with URLSearchParams
+      const formValues = Object.fromEntries(
+        Object.entries(values).map(([key, value]) => [key, String(value)])
+      );
+      
+      const response = await fetch('/', {
         method: 'POST',
-        body: formData,
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          'form-name': 'interest-form-over-21',
+          ...formValues
+        }).toString()
       });
+      
+      if (response.ok) {
+        // Simulate form submission
+        setIsSubmitted(true)
+
+        // Redirect after a delay
+        setTimeout(() => {
+          router.push("/thank-you")
+        }, 2000)
+      } else {
+        console.error('Form submission failed:', await response.text());
+      }
     } catch (error) {
       console.error('Error submitting to Netlify:', error);
     }
-
-    // Simulate form submission
-    setIsSubmitted(true)
-
-    // Redirect after a delay
-    setTimeout(() => {
-      router.push("/thank-you")
-    }, 2000)
   }
 
   const onUnderAgeSubmit = async (values: z.infer<typeof underAgeFormSchema>) => {
     // In a real application, you would submit this data to your backend or Netlify Forms
     console.log(values)
 
-    // Submit to Netlify Forms
-    const formData = new FormData();
-    // Add form-name field that Netlify requires
-    formData.append('form-name', 'interest-form-under-21');
-    
-    // Add all form values
-    Object.entries(values).forEach(([key, value]) => {
-      formData.append(key, value.toString());
-    });
-    
+    // Submit to Netlify Forms using modern approach
     try {
-      // Submit the form data to Netlify
-      await fetch('/', {
+      // Convert all values to strings to ensure compatibility with URLSearchParams
+      const formValues = Object.fromEntries(
+        Object.entries(values).map(([key, value]) => [key, String(value)])
+      );
+      
+      const response = await fetch('/', {
         method: 'POST',
-        body: formData,
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          'form-name': 'interest-form-under-21',
+          ...formValues
+        }).toString()
       });
+      
+      if (response.ok) {
+        // Simulate form submission
+        setIsSubmitted(true)
+
+        // Redirect after a delay
+        setTimeout(() => {
+          router.push("/thank-you-under-21")
+        }, 2000)
+      } else {
+        console.error('Form submission failed:', await response.text());
+      }
     } catch (error) {
       console.error('Error submitting to Netlify:', error);
     }
-
-    // Simulate form submission
-    setIsSubmitted(true)
-
-    // Redirect after a delay
-    setTimeout(() => {
-      router.push("/thank-you-under-21")
-    }, 2000)
   }
 
   if (isSubmitted) {
@@ -262,7 +268,7 @@ export default function InterestForm() {
               </div>
               
               <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" data-netlify="true" name="interest-form-over-21">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" data-netlify="true" name="interest-form-over-21" method="POST">
                   <input type="hidden" name="form-name" value="interest-form-over-21" />
                   
                   {formStep === 0 ? (
@@ -499,7 +505,7 @@ export default function InterestForm() {
                 </p>
                 
                 <Form {...underAgeForm}>
-                  <form onSubmit={underAgeForm.handleSubmit(onUnderAgeSubmit)} className="space-y-6" data-netlify="true" name="interest-form-under-21">
+                  <form onSubmit={underAgeForm.handleSubmit(onUnderAgeSubmit)} className="space-y-6" data-netlify="true" name="interest-form-under-21" method="POST">
                     <input type="hidden" name="form-name" value="interest-form-under-21" />
                     
                     <FormField

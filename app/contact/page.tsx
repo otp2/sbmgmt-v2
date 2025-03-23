@@ -35,28 +35,31 @@ export default function Contact() {
     // In a real application, you would submit this data to your backend or Netlify Forms
     console.log(values)
 
-    // Submit to Netlify Forms
-    const formData = new FormData();
-    // Add form-name field that Netlify requires
-    formData.append('form-name', 'contact-form');
-    
-    // Add all form values
-    Object.entries(values).forEach(([key, value]) => {
-      formData.append(key, value.toString());
-    });
-    
+    // Submit to Netlify Forms using modern approach
     try {
-      // Submit the form data to Netlify
-      await fetch('/', {
+      // Convert form values to string to ensure compatibility with URLSearchParams
+      const formValues = Object.fromEntries(
+        Object.entries(values).map(([key, value]) => [key, String(value)])
+      );
+      
+      const response = await fetch('/', {
         method: 'POST',
-        body: formData,
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          'form-name': 'contact-form',
+          ...formValues
+        }).toString()
       });
+      
+      if (response.ok) {
+        // Simulate form submission
+        setIsSubmitted(true);
+      } else {
+        console.error('Form submission failed:', await response.text());
+      }
     } catch (error) {
       console.error('Error submitting to Netlify:', error);
     }
-
-    // Simulate form submission
-    setIsSubmitted(true)
   }
 
   useEffect(() => {
@@ -109,7 +112,7 @@ export default function Contact() {
                 </div>
               ) : (
                 <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" data-netlify="true" name="contact-form">
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" data-netlify="true" name="contact-form" method="POST">
                     <input type="hidden" name="form-name" value="contact-form" />
                     
                     <FormField

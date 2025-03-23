@@ -138,7 +138,7 @@ export default function RootLayout({
         
         {/* Hidden Netlify Forms to ensure proper form recognition */}
         <div style={{ display: 'none' }}>
-          <form name="interest-form-over-21" data-netlify="true">
+          <form name="interest-form-over-21" data-netlify="true" method="POST">
             <input type="text" name="fullName" />
             <input type="text" name="state" />
             <input type="email" name="email" />
@@ -147,19 +147,22 @@ export default function RootLayout({
             <input type="checkbox" name="emailOptIn" />
             <input type="text" name="contactPreference" />
             <input type="checkbox" name="ageConfirmation" />
+            <input type="hidden" name="form-name" value="interest-form-over-21" />
           </form>
           
-          <form name="interest-form-under-21" data-netlify="true">
+          <form name="interest-form-under-21" data-netlify="true" method="POST">
             <input type="email" name="email" />
             <input type="text" name="phone" />
             <input type="checkbox" name="smsOptIn" />
             <input type="checkbox" name="emailOptIn" />
+            <input type="hidden" name="form-name" value="interest-form-under-21" />
           </form>
           
-          <form name="contact-form" data-netlify="true">
+          <form name="contact-form" data-netlify="true" method="POST">
             <input type="text" name="name" />
             <input type="email" name="email" />
             <textarea name="message"></textarea>
+            <input type="hidden" name="form-name" value="contact-form" />
           </form>
         </div>
         
