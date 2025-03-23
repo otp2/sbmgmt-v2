@@ -152,10 +152,11 @@ export default function InterestForm() {
       // Convert formData to encoded string for submission
       const encodedData = new URLSearchParams(formData as any).toString();
       
-      console.log("Submitting form to Netlify...");
+      console.log("Submitting form to Netlify via static file path...");
       
-      // Submit to root URL for Netlify form processing
-      const response = await fetch("/", {
+      // CRITICAL FIX: Submit to the static HTML file path instead of the root path
+      // This ensures Next.js doesn't intercept the submission
+      const response = await fetch("/__forms.html", {
         method: "POST",
         headers: { 
           "Content-Type": "application/x-www-form-urlencoded" 
@@ -216,10 +217,11 @@ export default function InterestForm() {
       // Convert formData to encoded string for submission
       const encodedData = new URLSearchParams(formData as any).toString();
       
-      console.log("Submitting form to Netlify...");
+      console.log("Submitting form to Netlify via static file path...");
       
-      // Submit to root URL for Netlify form processing
-      const response = await fetch("/", {
+      // CRITICAL FIX: Submit to the static HTML file path instead of the root path
+      // This ensures Next.js doesn't intercept the submission
+      const response = await fetch("/__forms.html", {
         method: "POST",
         headers: { 
           "Content-Type": "application/x-www-form-urlencoded" 
@@ -326,7 +328,7 @@ export default function InterestForm() {
               </div>
               
               <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" method="POST" data-netlify="true" name="interest-over-21" netlify-honeypot="bot-field">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" method="POST" action="/__forms.html" data-netlify="true" name="interest-over-21" netlify-honeypot="bot-field">
                   <input type="hidden" name="form-name" value="interest-over-21" />
                   <div hidden>
                     <input name="bot-field" />
@@ -566,7 +568,7 @@ export default function InterestForm() {
                 </p>
                 
                 <Form {...underAgeForm}>
-                  <form onSubmit={underAgeForm.handleSubmit(onUnderAgeSubmit)} className="space-y-6" method="POST" data-netlify="true" name="interest-under-21" netlify-honeypot="bot-field">
+                  <form onSubmit={underAgeForm.handleSubmit(onUnderAgeSubmit)} className="space-y-6" method="POST" action="/__forms.html" data-netlify="true" name="interest-under-21" netlify-honeypot="bot-field">
                     <input type="hidden" name="form-name" value="interest-under-21" />
                     <div hidden>
                       <input name="bot-field" />

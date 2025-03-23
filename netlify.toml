@@ -6,6 +6,13 @@
 [build.processing.html]
   pretty_urls = true
 
+# Handle static form submissions - this is critical for Next.js
+[[redirects]]
+  from = "/__forms.html"
+  to = "/__forms.html"
+  status = 200
+  force = true
+
 # Ensure all paths route correctly for SPA
 [[redirects]]
   from = "/*"
