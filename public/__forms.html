@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Netlify Forms</title>
+  </head>
+  <body>
+    <!-- Contact form detection -->
+    <form name="contact" data-netlify="true" hidden>
+      <input type="hidden" name="form-name" value="contact" />
+      <input name="name" type="text" />
+      <input name="email" type="email" />
+      <textarea name="message"></textarea>
+    </form>
+
+    <!-- Interest over 21 form detection -->
+    <form name="interest-over-21" data-netlify="true" hidden>
+      <input type="hidden" name="form-name" value="interest-over-21" />
+      <input name="fullName" type="text" />
+      <input name="state" type="text" />
+      <input name="email" type="email" />
+      <input name="phone" type="tel" />
+      <input name="smsOptIn" type="checkbox" />
+      <input name="emailOptIn" type="checkbox" />
+      <input name="contactPreference" type="text" />
+      <input name="ageConfirmation" type="checkbox" />
+    </form>
+
+    <!-- Interest under 21 form detection -->
+    <form name="interest-under-21" data-netlify="true" hidden>
+      <input type="hidden" name="form-name" value="interest-under-21" />
+      <input name="email" type="email" />
+      <input name="phone" type="tel" />
+      <input name="dateOfBirth" type="text" />
+      <input name="smsOptIn" type="checkbox" />
+      <input name="emailOptIn" type="checkbox" />
+    </form>
+  </body>
+</html> 

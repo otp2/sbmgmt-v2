@@ -47,8 +47,8 @@ export default function Contact() {
         formData.append(key, value);
       });
       
-      // Submit the form to Netlify
-      const response = await fetch("/", {
+      // Submit the form to Netlify - point to the static HTML file
+      const response = await fetch("/__forms.html", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: new URLSearchParams(formData as any).toString()
