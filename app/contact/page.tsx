@@ -36,15 +36,34 @@ export default function Contact() {
     console.log(values)
 
     try {
-      // Submit the form data to your API endpoint
-      // Replace with your actual API endpoint when ready
-      // For now, we'll just simulate a successful submission
-      await new Promise(resolve => setTimeout(resolve, 500));
+      // Create a FormData object to submit to Netlify
+      const formData = new FormData();
+      
+      // Add form name (required for Netlify Forms)
+      formData.append("form-name", "contact");
+      
+      // Add all form values
+      Object.entries(values).forEach(([key, value]) => {
+        formData.append(key, value);
+      });
+      
+      // Submit the form to Netlify
+      const response = await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(formData as any).toString()
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Form submission failed: ${response.status}`);
+      }
     } catch (error) {
       console.error('Error submitting form:', error);
+      // Continue with the success flow even if there's an error
+      // You might want to handle errors differently in production
     }
 
-    // Simulate form submission
+    // Set form as submitted regardless of API response
     setIsSubmitted(true)
   }
 
@@ -86,6 +105,13 @@ export default function Contact() {
             <div className="glass-effect p-8 rounded-xl border border-silver/10 shadow-xl shadow-black/5">
               <h2 className="text-2xl font-bold mb-6">Send Us a Message</h2>
               
+              {/* Hidden form for Netlify detection */}
+              <form name="contact" data-netlify="true" hidden>
+                <input type="text" name="name" />
+                <input type="email" name="email" />
+                <textarea name="message"></textarea>
+              </form>
+              
               {isSubmitted ? (
                 <div className="bg-silver/5 p-8 rounded-lg border border-silver/20 text-center">
                   <div className="w-16 h-16 bg-accent-gradient rounded-full flex items-center justify-center mx-auto mb-4">
@@ -98,7 +124,8 @@ export default function Contact() {
                 </div>
               ) : (
                 <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" data-netlify="true" name="contact">
+                    <input type="hidden" name="form-name" value="contact" />
                     
                     <FormField
                       control={form.control}
@@ -179,8 +206,8 @@ export default function Contact() {
                     <div>
                       <h3 className="font-bold text-xl mb-1">Phone</h3>
                       <p className="text-neutral text-lg mb-2">Monday-Friday, 9am-5pm EST</p>
-                      <a href="tel:5551234567" className="text-silver hover:text-white transition-colors">
-                        (555) 123-4567
+                      <a href="tel:6305460465" className="text-silver hover:text-white transition-colors">
+                        (630) 546-0465
                       </a>
                     </div>
                   </div>

@@ -83,6 +83,7 @@ const formSchema = z.object({
 const underAgeFormSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
   phone: z.string().min(10, { message: "Please enter a valid phone number." }),
+  dateOfBirth: z.string().min(1, { message: "Please enter your date of birth." }),
   smsOptIn: z.boolean().default(false),
   emailOptIn: z.boolean().default(true),
 })
@@ -112,6 +113,7 @@ export default function InterestForm() {
     defaultValues: {
       email: "",
       phone: "",
+      dateOfBirth: "",
       smsOptIn: false,
       emailOptIn: true,
     },
@@ -122,15 +124,38 @@ export default function InterestForm() {
     console.log(values)
 
     try {
-      // Submit the form data to your API endpoint
-      // Replace with your actual API endpoint when ready
-      // For now, we'll just simulate a successful submission
-      await new Promise(resolve => setTimeout(resolve, 500));
+      // Create a FormData object to submit to Netlify
+      const formData = new FormData();
+      
+      // Add form name (required for Netlify Forms)
+      formData.append("form-name", "interest-over-21");
+      
+      // Add all form values
+      Object.entries(values).forEach(([key, value]) => {
+        // Convert boolean to string for form submission
+        if (typeof value === 'boolean') {
+          formData.append(key, value ? 'yes' : 'no');
+        } else {
+          formData.append(key, value as string);
+        }
+      });
+      
+      // Submit the form to Netlify
+      const response = await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(formData as any).toString()
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Form submission failed: ${response.status}`);
+      }
     } catch (error) {
       console.error('Error submitting form:', error);
+      // Continue with the success flow even if there's an error
     }
 
-    // Simulate form submission
+    // Mark as submitted and redirect
     setIsSubmitted(true)
 
     // Redirect after a delay
@@ -144,15 +169,38 @@ export default function InterestForm() {
     console.log(values)
 
     try {
-      // Submit the form data to your API endpoint
-      // Replace with your actual API endpoint when ready
-      // For now, we'll just simulate a successful submission
-      await new Promise(resolve => setTimeout(resolve, 500));
+      // Create a FormData object to submit to Netlify
+      const formData = new FormData();
+      
+      // Add form name (required for Netlify Forms)
+      formData.append("form-name", "interest-under-21");
+      
+      // Add all form values
+      Object.entries(values).forEach(([key, value]) => {
+        // Convert boolean to string for form submission
+        if (typeof value === 'boolean') {
+          formData.append(key, value ? 'yes' : 'no');
+        } else {
+          formData.append(key, value as string);
+        }
+      });
+      
+      // Submit the form to Netlify
+      const response = await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(formData as any).toString()
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Form submission failed: ${response.status}`);
+      }
     } catch (error) {
       console.error('Error submitting form:', error);
+      // Continue with the success flow even if there's an error
     }
 
-    // Simulate form submission
+    // Mark as submitted and redirect
     setIsSubmitted(true)
 
     // Redirect after a delay
@@ -190,6 +238,26 @@ export default function InterestForm() {
         className="absolute bottom-1/3 left-10 w-48 h-48 bg-primary/5 rounded-full blur-3xl floating-element"
         style={{ animationDelay: "2s" }}
       ></div>
+
+      {/* Hidden forms for Netlify detection */}
+      <form name="interest-over-21" data-netlify="true" hidden>
+        <input type="text" name="fullName" />
+        <input type="text" name="state" />
+        <input type="email" name="email" />
+        <input type="tel" name="phone" />
+        <input type="checkbox" name="smsOptIn" />
+        <input type="checkbox" name="emailOptIn" />
+        <input type="text" name="contactPreference" />
+        <input type="checkbox" name="ageConfirmation" />
+      </form>
+
+      <form name="interest-under-21" data-netlify="true" hidden>
+        <input type="email" name="email" />
+        <input type="tel" name="phone" />
+        <input type="text" name="dateOfBirth" />
+        <input type="checkbox" name="smsOptIn" />
+        <input type="checkbox" name="emailOptIn" />
+      </form>
 
       <div className="container mx-auto px-4 md:px-6">
         <div className="max-w-4xl mx-auto">
@@ -240,7 +308,8 @@ export default function InterestForm() {
               </div>
               
               <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" data-netlify="true" name="interest-over-21">
+                  <input type="hidden" name="form-name" value="interest-over-21" />
                   
                   {formStep === 0 ? (
                     <>
@@ -469,93 +538,109 @@ export default function InterestForm() {
 
           {isOver21 === false && (
             <div className="glass-effect p-8 rounded-xl border border-silver/10 shadow-xl shadow-black/5">
-              <div className="max-w-lg mx-auto">
-                <h2 className="text-2xl font-bold mb-4">Under 21 Registration</h2>
-                <p className="text-neutral mb-6">
-                  We have special programs available for those under 21. Please provide your contact information and we'll keep you updated. <span className="text-silver">Our team will reach out to contact you in the future when appropriate opportunities become available.</span>
-                </p>
-                
-                <Form {...underAgeForm}>
-                  <form onSubmit={underAgeForm.handleSubmit(onUnderAgeSubmit)} className="space-y-6">
+              <h2 className="text-2xl font-bold mb-6">Join Our Waiting List</h2>
+              <p className="text-neutral mb-8">
+                While you must be 21 years or older to access our full services, we'd love to keep you updated on opportunities available to you once you become eligible.
+              </p>
+              
+              <Form {...underAgeForm}>
+                <form onSubmit={underAgeForm.handleSubmit(onUnderAgeSubmit)} className="space-y-6" data-netlify="true" name="interest-under-21">
+                  <input type="hidden" name="form-name" value="interest-under-21" />
+                  
+                  <FormField
+                    control={underAgeForm.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-silver">Email Address</FormLabel>
+                        <FormControl>
+                          <Input type="email" placeholder="john@example.com" className="bg-background/50 border-silver/20 focus:border-silver" {...field} />
+                        </FormControl>
+                        <FormMessage className="text-red-400" />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={underAgeForm.control}
+                    name="phone"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-silver">Phone Number</FormLabel>
+                        <FormControl>
+                          <Input placeholder="(123) 456-7890" className="bg-background/50 border-silver/20 focus:border-silver" {...field} />
+                        </FormControl>
+                        <FormMessage className="text-red-400" />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={underAgeForm.control}
+                    name="dateOfBirth"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-silver">Date of Birth</FormLabel>
+                        <FormControl>
+                          <Input type="date" placeholder="MM/DD/YYYY" className="bg-background/50 border-silver/20 focus:border-silver" {...field} />
+                        </FormControl>
+                        <FormDescription className="text-sm text-muted">
+                          We'll contact you when you turn 21 with exclusive offers.
+                        </FormDescription>
+                        <FormMessage className="text-red-400" />
+                      </FormItem>
+                    )}
+                  />
+
+                  <div className="space-y-3">
+                    <FormField
+                      control={underAgeForm.control}
+                      name="emailOptIn"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                          <FormControl>
+                            <Checkbox 
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                              className="data-[state=checked]:bg-silver data-[state=checked]:border-silver"
+                            />
+                          </FormControl>
+                          <div className="space-y-1 leading-none">
+                            <FormLabel>
+                              I agree to receive email communications about offers and updates.
+                            </FormLabel>
+                          </div>
+                        </FormItem>
+                      )}
+                    />
                     
                     <FormField
                       control={underAgeForm.control}
-                      name="email"
+                      name="smsOptIn"
                       render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-silver">Email Address</FormLabel>
+                        <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                           <FormControl>
-                            <Input type="email" placeholder="john@example.com" className="bg-background/50 border-silver/20 focus:border-silver" {...field} />
+                            <Checkbox 
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                              className="data-[state=checked]:bg-silver data-[state=checked]:border-silver"
+                            />
                           </FormControl>
-                          <FormMessage className="text-red-400" />
+                          <div className="space-y-1 leading-none">
+                            <FormLabel>
+                              I agree to receive SMS text messages about offers and updates.
+                            </FormLabel>
+                          </div>
                         </FormItem>
                       )}
                     />
+                  </div>
 
-                    <FormField
-                      control={underAgeForm.control}
-                      name="phone"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-silver">Phone Number</FormLabel>
-                          <FormControl>
-                            <Input placeholder="(123) 456-7890" className="bg-background/50 border-silver/20 focus:border-silver" {...field} />
-                          </FormControl>
-                          <FormMessage className="text-red-400" />
-                        </FormItem>
-                      )}
-                    />
-
-                    <div className="space-y-3">
-                      <FormField
-                        control={underAgeForm.control}
-                        name="emailOptIn"
-                        render={({ field }) => (
-                          <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                            <FormControl>
-                              <Checkbox 
-                                checked={field.value}
-                                onCheckedChange={field.onChange}
-                                className="data-[state=checked]:bg-silver data-[state=checked]:border-silver"
-                              />
-                            </FormControl>
-                            <div className="space-y-1 leading-none">
-                              <FormLabel>
-                                I agree to receive email communications about offers and updates.
-                              </FormLabel>
-                            </div>
-                          </FormItem>
-                        )}
-                      />
-                      
-                      <FormField
-                        control={underAgeForm.control}
-                        name="smsOptIn"
-                        render={({ field }) => (
-                          <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                            <FormControl>
-                              <Checkbox 
-                                checked={field.value}
-                                onCheckedChange={field.onChange}
-                                className="data-[state=checked]:bg-silver data-[state=checked]:border-silver"
-                              />
-                            </FormControl>
-                            <div className="space-y-1 leading-none">
-                              <FormLabel>
-                                I agree to receive SMS text messages about offers and updates.
-                              </FormLabel>
-                            </div>
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-
-                    <button type="submit" className="w-full py-3 px-8 rounded-full bg-button-gradient text-primary-foreground border border-silver/40 shadow-lg shadow-primary/20 font-medium text-base hover:opacity-90 transition-opacity">
-                      Submit Information
-                    </button>
-                  </form>
-                </Form>
-              </div>
+                  <button type="submit" className="w-full py-3 px-8 rounded-full bg-button-gradient text-primary-foreground border border-silver/40 shadow-lg shadow-primary/20 font-medium text-base hover:opacity-90 transition-opacity">
+                    Submit Information
+                  </button>
+                </form>
+              </Form>
             </div>
           )}
         </div>
