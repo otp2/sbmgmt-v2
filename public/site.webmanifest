@@ -1,0 +1,23 @@
+{
+  "name": "SB Management",
+  "short_name": "SB Mgmt",
+  "icons": [
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon-196x196.png",
+      "sizes": "196x196",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "theme_color": "#1e2024",
+  "background_color": "#1e2024",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait"
+} 
