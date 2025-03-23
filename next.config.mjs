@@ -15,24 +15,12 @@ const nextConfig = {
   },
   images: {
     unoptimized: true,
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '**',
-      },
-    ],
   },
   experimental: {
     webpackBuildWorker: true,
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
   },
-  // Required for Netlify
-  output: 'standalone',
-  // Enable trailing slashes for compatibility
-  trailingSlash: true,
-  // Configure React strict mode
-  reactStrictMode: false,
 }
 
 mergeConfig(nextConfig, userConfig)

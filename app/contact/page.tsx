@@ -12,7 +12,6 @@ import { Mail, Phone, Calendar, ArrowRight } from "lucide-react"
 import { StarBorder } from "@/components/ui/star-border"
 import Link from "next/link"
 import Script from 'next/script'
-import { submitToNetlify } from "@/netlify/forms-helper"
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -33,22 +32,20 @@ export default function Contact() {
   })
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    // In a real application, you would submit this data to your backend or Netlify Forms
+    // Log form values
     console.log(values)
 
-    // Submit to Netlify Forms using helper function
     try {
-      const response = await submitToNetlify('contact-form', values);
-      
-      if (response.ok) {
-        // Simulate form submission
-        setIsSubmitted(true);
-      } else {
-        console.error('Form submission failed:', await response.text());
-      }
+      // Submit the form data to your API endpoint
+      // Replace with your actual API endpoint when ready
+      // For now, we'll just simulate a successful submission
+      await new Promise(resolve => setTimeout(resolve, 500));
     } catch (error) {
-      console.error('Error submitting to Netlify:', error);
+      console.error('Error submitting form:', error);
     }
+
+    // Simulate form submission
+    setIsSubmitted(true)
   }
 
   useEffect(() => {
@@ -101,8 +98,7 @@ export default function Contact() {
                 </div>
               ) : (
                 <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" data-netlify="true" name="contact-form" method="POST">
-                    <input type="hidden" name="form-name" value="contact-form" />
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                     
                     <FormField
                       control={form.control}

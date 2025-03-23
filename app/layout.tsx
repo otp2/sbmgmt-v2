@@ -136,45 +136,6 @@ export default function RootLayout({
           <Footer />
         </div>
         
-        {/* Hidden Netlify Forms to ensure proper form recognition */}
-        <div style={{ display: 'none' }}>
-          <form name="interest-form-over-21" data-netlify="true" method="POST" netlify-honeypot="bot-field">
-            <input type="text" name="fullName" />
-            <input type="text" name="state" />
-            <input type="email" name="email" />
-            <input type="text" name="phone" />
-            <input type="checkbox" name="smsOptIn" />
-            <input type="checkbox" name="emailOptIn" />
-            <input type="text" name="contactPreference" />
-            <input type="checkbox" name="ageConfirmation" />
-            <input type="hidden" name="form-name" value="interest-form-over-21" />
-            <p className="hidden">
-              <label>Don't fill this out if you're human: <input name="bot-field" /></label>
-            </p>
-          </form>
-          
-          <form name="interest-form-under-21" data-netlify="true" method="POST" netlify-honeypot="bot-field">
-            <input type="email" name="email" />
-            <input type="text" name="phone" />
-            <input type="checkbox" name="smsOptIn" />
-            <input type="checkbox" name="emailOptIn" />
-            <input type="hidden" name="form-name" value="interest-form-under-21" />
-            <p className="hidden">
-              <label>Don't fill this out if you're human: <input name="bot-field" /></label>
-            </p>
-          </form>
-          
-          <form name="contact-form" data-netlify="true" method="POST" netlify-honeypot="bot-field">
-            <input type="text" name="name" />
-            <input type="email" name="email" />
-            <textarea name="message"></textarea>
-            <input type="hidden" name="form-name" value="contact-form" />
-            <p className="hidden">
-              <label>Don't fill this out if you're human: <input name="bot-field" /></label>
-            </p>
-          </form>
-        </div>
-        
         {/* Gradient background elements */}
         <div className="fixed inset-0 -z-10 bg-main-gradient"></div>
         <div className="fixed top-1/4 left-1/4 w-1/2 h-1/2 -z-10 bg-accent/5 rounded-full blur-3xl floating-element"></div>

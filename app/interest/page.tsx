@@ -13,7 +13,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { AlertCircle, ArrowRight, UserCheck, CheckCircle, Calendar } from "lucide-react"
 import { StarBorder } from "@/components/ui/star-border"
-import { submitToNetlify } from "@/netlify/forms-helper"
 
 const states = [
   "Alabama",
@@ -119,51 +118,47 @@ export default function InterestForm() {
   })
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    // In a real application, you would submit this data to your backend or Netlify Forms
+    // Log form values
     console.log(values)
 
-    // Submit to Netlify Forms using helper function
     try {
-      const response = await submitToNetlify('interest-form-over-21', values);
-      
-      if (response.ok) {
-        // Simulate form submission
-        setIsSubmitted(true)
-
-        // Redirect after a delay
-        setTimeout(() => {
-          router.push("/thank-you")
-        }, 2000)
-      } else {
-        console.error('Form submission failed:', await response.text());
-      }
+      // Submit the form data to your API endpoint
+      // Replace with your actual API endpoint when ready
+      // For now, we'll just simulate a successful submission
+      await new Promise(resolve => setTimeout(resolve, 500));
     } catch (error) {
-      console.error('Error submitting to Netlify:', error);
+      console.error('Error submitting form:', error);
     }
+
+    // Simulate form submission
+    setIsSubmitted(true)
+
+    // Redirect after a delay
+    setTimeout(() => {
+      router.push("/thank-you")
+    }, 2000)
   }
 
   const onUnderAgeSubmit = async (values: z.infer<typeof underAgeFormSchema>) => {
-    // In a real application, you would submit this data to your backend or Netlify Forms
+    // Log form values
     console.log(values)
 
-    // Submit to Netlify Forms using helper function
     try {
-      const response = await submitToNetlify('interest-form-under-21', values);
-      
-      if (response.ok) {
-        // Simulate form submission
-        setIsSubmitted(true)
-
-        // Redirect after a delay
-        setTimeout(() => {
-          router.push("/thank-you-under-21")
-        }, 2000)
-      } else {
-        console.error('Form submission failed:', await response.text());
-      }
+      // Submit the form data to your API endpoint
+      // Replace with your actual API endpoint when ready
+      // For now, we'll just simulate a successful submission
+      await new Promise(resolve => setTimeout(resolve, 500));
     } catch (error) {
-      console.error('Error submitting to Netlify:', error);
+      console.error('Error submitting form:', error);
     }
+
+    // Simulate form submission
+    setIsSubmitted(true)
+
+    // Redirect after a delay
+    setTimeout(() => {
+      router.push("/thank-you-under-21")
+    }, 2000)
   }
 
   if (isSubmitted) {
@@ -245,8 +240,7 @@ export default function InterestForm() {
               </div>
               
               <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" data-netlify="true" name="interest-form-over-21" method="POST">
-                  <input type="hidden" name="form-name" value="interest-form-over-21" />
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                   
                   {formStep === 0 ? (
                     <>
@@ -482,8 +476,7 @@ export default function InterestForm() {
                 </p>
                 
                 <Form {...underAgeForm}>
-                  <form onSubmit={underAgeForm.handleSubmit(onUnderAgeSubmit)} className="space-y-6" data-netlify="true" name="interest-form-under-21" method="POST">
-                    <input type="hidden" name="form-name" value="interest-form-under-21" />
+                  <form onSubmit={underAgeForm.handleSubmit(onUnderAgeSubmit)} className="space-y-6">
                     
                     <FormField
                       control={underAgeForm.control}
