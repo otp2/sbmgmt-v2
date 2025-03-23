@@ -75,7 +75,13 @@ export function Footer() {
               © {new Date().getFullYear()} SB Management. All rights reserved.
             </p>
             <p className="text-xs text-neutral mt-2 font-normal">
-              <span className="text-silver">*</span> Professional solutions tailored to meet your unique requirements.
+              Professional solutions tailored to meet your unique requirements.
+            </p>
+            <p className="text-xs text-neutral mt-2 font-normal">
+              Contact us: <a href="tel:6305460465" className="text-silver hover:underline">(630) 546-0465</a>
+            </p>
+            <p className="text-xs text-neutral mt-2 font-normal">
+              <a href="https://sbmgmt.co" className="text-silver hover:underline">sbmgmt.co</a>
             </p>
           </div>
         </div>

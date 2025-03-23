@@ -32,15 +32,6 @@ export function FeatureSteps({
   const sectionRef = useRef(null)
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 })
   
-  // Auto advance carousel every 5 seconds
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveStep(current => (current + 1) % features.length)
-    }, 5000)
-    
-    return () => clearInterval(timer)
-  }, [features.length])
-  
   // Handle navigation to next step
   const goToNextStep = () => {
     setActiveStep(current => (current + 1) % features.length)
@@ -168,7 +159,7 @@ export function FeatureSteps({
                         alt={feature.title}
                         width={500}
                         height={350}
-                        className="max-w-full max-h-full w-auto h-auto object-contain animate-subtle-float"
+                        className="max-w-full max-h-full w-auto h-auto object-contain"
                         priority={true}
                       />
                     </div>
@@ -177,38 +168,19 @@ export function FeatureSteps({
                 )
               )}
             </AnimatePresence>
-          </motion.div>
-          
-          {/* Mobile Navigation */}
-          <motion.div 
-            className="flex justify-between items-center"
-            variants={itemVariants}
-          >
+
+            {/* Add navigation arrows overlayed on the image for better UX */}
             <button 
               onClick={goToPrevStep}
-              className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+              className="absolute left-2 top-1/2 transform -translate-y-1/2 w-10 h-10 rounded-full bg-black/40 hover:bg-black/60 flex items-center justify-center transition-colors z-10"
               aria-label="Previous step"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
             
-            <div className="flex space-x-2">
-              {features.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleStepClick(index)}
-                  className={cn(
-                    "w-2 h-2 rounded-full transition-all duration-300",
-                    index === activeStep ? "bg-accent w-6" : "bg-white/30 hover:bg-white/50"
-                  )}
-                  aria-label={`Go to step ${index + 1}`}
-                />
-              ))}
-            </div>
-            
             <button 
               onClick={goToNextStep}
-              className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 w-10 h-10 rounded-full bg-black/40 hover:bg-black/60 flex items-center justify-center transition-colors z-10"
               aria-label="Next step"
             >
               <ChevronRight className="w-5 h-5" />
@@ -248,88 +220,110 @@ export function FeatureSteps({
           </motion.div>
         </div>
 
-        {/* Desktop version (side by side) */}
-        <div className="hidden lg:grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+        {/* Desktop version with side-by-side layout */}
+        <div className="lg:grid grid-cols-12 gap-8 hidden">
+          {/* Left side - Image display */}
           <motion.div 
-            className="order-2 space-y-8"
+            className="col-span-7 relative rounded-xl overflow-hidden glass-effect min-h-[450px]"
             variants={itemVariants}
           >
-            {features.map((feature, index) => (
-              <motion.div
-                key={feature.step}
-                className={cn(
-                  "flex items-start gap-6 p-6 rounded-xl transition-all duration-300 cursor-pointer",
-                  index === activeStep ? "glass-effect" : "hover:bg-white/5"
-                )}
-                initial={{ opacity: 0.7 }}
-                animate={{ 
-                  opacity: 1,
-                  scale: index === activeStep ? 1.02 : 1,
-                  y: index === activeStep ? -5 : 0
-                }}
-                transition={{ duration: 0.4 }}
-                onClick={() => handleStepClick(index)}
-                whileHover={{ x: 5 }}
-              >
-                <div className={cn(
-                  "w-12 h-12 rounded-full bg-accent-gradient flex items-center justify-center relative shrink-0",
-                  "shadow-lg shadow-accent/20"
-                )}>
-                  {feature.icon}
-                  {index === activeStep && (
-                    <div className="absolute inset-0 rounded-full bg-white/30 animate-ping-slow opacity-0"></div>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  <h3 className="text-xl font-heading font-semibold">
-                    {feature.title}
-                  </h3>
-                  <p className="text-neutral font-normal">
-                    {feature.content}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          <motion.div 
-            className="order-1 relative"
-            variants={itemVariants}
-          >            
             <AnimatePresence initial={false} custom={direction} mode="wait">
               {features.map((feature, index) => 
                 index === activeStep && (
                   <motion.div
                     key={feature.step}
-                    className="rounded-xl overflow-hidden glass-effect h-[450px] flex items-center justify-center relative"
                     custom={direction}
                     variants={slideVariants}
                     initial="enter"
                     animate="center"
                     exit="exit"
                     transition={{
-                      opacity: { duration: 0.4 },
+                      opacity: { duration: 0.5 },
                       x: { type: "spring", stiffness: 300, damping: 30 },
-                      scale: { duration: 0.4 }
+                      scale: { duration: 0.5 }
                     }}
+                    className="absolute inset-0 flex items-center justify-center p-10"
                   >
-                    <div className="relative w-[90%] h-[90%] flex items-center justify-center">
+                    <div className="relative w-full h-full flex items-center justify-center">
                       <Image
                         src={feature.image}
                         alt={feature.title}
-                        width={500}
-                        height={350}
-                        className="max-w-full max-h-full w-auto h-auto object-contain animate-subtle-float"
+                        width={800}
+                        height={600}
+                        className="max-w-full max-h-full w-auto h-auto object-contain"
                         priority={true}
                       />
                     </div>
-                    <div className="absolute inset-0 bg-card-gradient opacity-40 mix-blend-multiply"></div>
+                    <div className="absolute inset-0 bg-card-gradient opacity-30 mix-blend-multiply"></div>
                   </motion.div>
                 )
               )}
             </AnimatePresence>
+
+            {/* Add navigation arrows for desktop */}
+            <button 
+              onClick={goToPrevStep}
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 w-12 h-12 rounded-full bg-black/40 hover:bg-black/60 flex items-center justify-center transition-colors z-10"
+              aria-label="Previous step"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+            
+            <button 
+              onClick={goToNextStep}
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 w-12 h-12 rounded-full bg-black/40 hover:bg-black/60 flex items-center justify-center transition-colors z-10"
+              aria-label="Next step"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
           </motion.div>
+          
+          {/* Right side - Text content */}
+          <div className="col-span-5">
+            <div className="space-y-6">
+              {features.map((feature, index) => (
+                <motion.div
+                  key={feature.step}
+                  onClick={() => handleStepClick(index)}
+                  className={cn(
+                    "cursor-pointer glass-effect rounded-xl transition-all duration-300 p-5",
+                    activeStep === index 
+                      ? "border border-silver/30 shadow-xl shadow-accent/5" 
+                      : "border border-silver/10 hover:border-silver/20"
+                  )}
+                  variants={itemVariants}
+                >
+                  <div className="flex items-center gap-4 mb-2">
+                    <div className={cn(
+                      "w-10 h-10 rounded-full flex items-center justify-center relative shrink-0",
+                      activeStep === index 
+                        ? "bg-accent-gradient shadow-lg shadow-accent/20" 
+                        : "bg-card-gradient"
+                    )}>
+                      {feature.icon}
+                      {activeStep === index && (
+                        <div className="absolute inset-0 rounded-full bg-white/30 animate-ping-slow"></div>
+                      )}
+                    </div>
+                    <div>
+                      <span className="text-sm text-silver/70 font-medium">
+                        {feature.step}
+                      </span>
+                      <h3 className={cn(
+                        "text-xl font-heading font-semibold",
+                        activeStep === index ? "text-silver" : "text-foreground"
+                      )}>
+                        {feature.title}
+                      </h3>
+                    </div>
+                  </div>
+                  <p className="text-neutral pl-14">
+                    {feature.content}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
         </div>
       </motion.div>
     </section>

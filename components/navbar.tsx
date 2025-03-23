@@ -44,6 +44,7 @@ export function NavBar() {
   const [isMobile, setIsMobile] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const [sheetOpen, setSheetOpen] = useState(false)
 
   useEffect(() => {
     setMounted(true)
@@ -56,6 +57,18 @@ export function NavBar() {
       setScrolled(window.scrollY > 10)
     }
 
+    // Set active tab based on current URL
+    const pathname = window.location.pathname
+    const currentTab = navItems.find(item => 
+      pathname === item.url || 
+      (pathname !== '/' && item.url !== '/' && pathname.startsWith(item.url))
+    )
+    if (currentTab) {
+      setActiveTab(currentTab.name)
+    } else if (pathname === '/') {
+      setActiveTab('Home')
+    }
+
     handleResize()
     handleScroll()
     window.addEventListener("resize", handleResize)
@@ -65,6 +78,12 @@ export function NavBar() {
       window.removeEventListener("scroll", handleScroll)
     }
   }, [])
+
+  // Handle navigation click
+  const handleNavClick = (name: string) => {
+    setActiveTab(name)
+    setSheetOpen(false) // Close the sheet on mobile when a nav item is clicked
+  }
 
   // Animation variants for navbar items
   const navbarVariants = {
@@ -116,7 +135,7 @@ export function NavBar() {
             <motion.div key={item.name} variants={itemVariants} custom={index}>
               <Link
                 href={item.url}
-                onClick={() => setActiveTab(item.name)}
+                onClick={() => handleNavClick(item.name)}
                 className={cn(
                   "relative text-sm font-medium tracking-wide transition-colors duration-300",
                   "text-foreground/80 hover:text-silver group flex flex-col items-center",
@@ -153,7 +172,7 @@ export function NavBar() {
           </Button>
         </motion.div>
 
-        <Sheet>
+        <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
           <SheetTrigger asChild className="md:hidden">
             <motion.div variants={itemVariants}>
               <Button variant="ghost" size="icon" className="relative">
@@ -172,18 +191,30 @@ export function NavBar() {
             <div className="flex flex-col gap-6">
               {navItems.map((item) => {
                 const Icon = item.icon
+                const isActive = activeTab === item.name
                 return (
                   <Link
                     key={item.name}
                     href={item.url}
-                    className="flex items-center gap-2 text-foreground/80 hover:text-silver font-medium group transition-transform duration-300 hover:translate-x-1"
+                    onClick={() => handleNavClick(item.name)}
+                    className={cn(
+                      "flex items-center gap-2 font-medium group transition-transform duration-300 hover:translate-x-1",
+                      isActive ? "text-silver" : "text-foreground/80 hover:text-silver"
+                    )}
                   >
-                    <Icon size={18} className="transition-colors duration-300 group-hover:text-accent" />
+                    <Icon size={18} className={cn(
+                      "transition-colors duration-300",
+                      isActive ? "text-accent" : "group-hover:text-accent"
+                    )} />
                     <span>{item.name}</span>
                   </Link>
                 )
               })}
-              <Button asChild className="mt-4 bg-button-gradient font-medium relative overflow-hidden group">
+              <Button 
+                asChild 
+                className="mt-4 bg-button-gradient font-medium relative overflow-hidden group"
+                onClick={() => setSheetOpen(false)}
+              >
                 <Link href="/interest">
                   <span className="relative z-10">Get Started</span>
                   <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>

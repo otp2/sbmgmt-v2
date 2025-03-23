@@ -12,6 +12,7 @@ import { Mail, Phone, Calendar, ArrowRight } from "lucide-react"
 import { StarBorder } from "@/components/ui/star-border"
 import Link from "next/link"
 import Script from 'next/script'
+import { useRouter } from "next/navigation"
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -21,6 +22,7 @@ const formSchema = z.object({
 
 export default function Contact() {
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const router = useRouter()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -48,7 +50,7 @@ export default function Contact() {
       });
       
       // Submit to the current page URL - this is how Netlify Forms works
-      const response = await fetch("/", {
+      const response = await fetch("/contact", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: new URLSearchParams(formData as any).toString()
@@ -57,12 +59,17 @@ export default function Contact() {
       if (!response.ok) {
         throw new Error(`Form submission failed: ${response.status}`);
       }
+
+      // Set submitted state to show success message
+      setIsSubmitted(true)
+      
+      // Redirect after a delay (optional)
+      // setTimeout(() => {
+      //   router.push("/thank-you")
+      // }, 2000)
     } catch (error) {
       console.error('Error submitting form:', error);
     }
-
-    // Simulate form submission
-    setIsSubmitted(true)
   }
 
   useEffect(() => {
@@ -197,8 +204,8 @@ export default function Contact() {
                     <div>
                       <h3 className="font-bold text-xl mb-1">Phone</h3>
                       <p className="text-neutral text-lg mb-2">Monday-Friday, 9am-5pm EST</p>
-                      <a href="tel:5551234567" className="text-silver hover:text-white transition-colors">
-                        (555) 123-4567
+                      <a href="tel:6305460465" className="text-silver hover:text-white transition-colors">
+                        (630) 546-0465
                       </a>
                     </div>
                   </div>

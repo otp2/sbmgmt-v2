@@ -31,20 +31,34 @@ export const metadata: Metadata = {
     siteName: 'SB Management',
     images: [
       {
-        url: '/main-icon.png', // Using the cleaner main icon
-        width: 512,
-        height: 512,
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
         alt: 'SB Management',
       },
     ],
     locale: 'en_US',
     type: 'website',
   },
+  verification: {
+    google: 'google-site-verification-code', // Update with actual verification code if available
+  },
+  alternates: {
+    canonical: 'https://sbmgmt.co',
+    types: {
+      'application/xml+sitemap': [
+        {
+          url: 'sitemap.xml',
+          title: 'Sitemap',
+        },
+      ],
+    },
+  },
   twitter: {
     card: 'summary_large_image',
     title: 'SB Management',
     description: 'Professional solutions tailored to meet your unique requirements.',
-    images: ['/main-icon.png'], // Using the cleaner main icon
+    images: ['/og-image.png'],
   },
   icons: {
     icon: [
@@ -97,6 +111,31 @@ export default function RootLayout({
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
             gtag('config', 'G-354H2J10W6');
+          `}
+        </Script>
+        
+        {/* JSON-LD for structured data */}
+        <Script id="schema-structured-data" type="application/ld+json">
+          {`
+            {
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "SB Management",
+              "url": "https://sbmgmt.co",
+              "logo": "https://sbmgmt.co/main-icon.png",
+              "sameAs": [
+                "https://www.facebook.com/sbmanagement",
+                "https://twitter.com/sbmanagement",
+                "https://www.instagram.com/sbmanagement"
+              ],
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "telephone": "+16305460465",
+                "contactType": "customer support",
+                "availableLanguage": "English"
+              },
+              "description": "Professional solutions tailored to meet your unique requirements."
+            }
           `}
         </Script>
         

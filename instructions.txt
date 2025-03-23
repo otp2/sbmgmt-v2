@@ -1,0 +1,45 @@
+# GitHub Push Instructions
+
+Since we're having trouble pushing directly from this terminal due to credential issues, follow these steps:
+
+## Option 1: Use GitHub Desktop (Recommended)
+
+1. Install GitHub Desktop from: https://desktop.github.com/
+2. Open GitHub Desktop and sign in with your SBMGMT account
+3. Add your local repository (C:\Users\16308\Downloads\sb-management-v2)
+4. Commit any changes if needed
+5. Push to your GitHub repository
+
+## Option 2: Use Git with Personal Access Token
+
+1. Generate a Personal Access Token:
+   - Go to https://github.com/settings/tokens
+   - Click "Generate new token"
+   - Give it a name like "SB Management"
+   - Check the "repo" permissions
+   - Click "Generate token"
+   - Copy the token (it will only be shown once)
+
+2. Run these commands in a new terminal:
+```
+git remote set-url origin https://YOUR_GITHUB_USERNAME:YOUR_PERSONAL_ACCESS_TOKEN@github.com/SBMGMT/sb-management-v2.git
+git push -u origin main
+```
+
+## Option 3: Upload via GitHub Web Interface
+
+1. Go to https://github.com/SBMGMT/sb-management-v2
+2. Click on "Add file" > "Upload files"
+3. Drag and drop your project files
+4. Commit the changes
+
+## After Pushing to GitHub
+
+Once your code is on GitHub, connect to Netlify:
+1. Log in to Netlify
+2. Click "New site from Git"
+3. Select GitHub and choose your repository
+4. Configure build settings:
+   - Build command: `npm run build`
+   - Publish directory: `.next`
+5. Click "Deploy site" 

@@ -83,6 +83,7 @@ const formSchema = z.object({
 const underAgeFormSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
   phone: z.string().min(10, { message: "Please enter a valid phone number." }),
+  dateOfBirth: z.string().min(1, { message: "Please enter your date of birth." }),
   smsOptIn: z.boolean().default(false),
   emailOptIn: z.boolean().default(true),
 })
@@ -112,6 +113,7 @@ export default function InterestForm() {
     defaultValues: {
       email: "",
       phone: "",
+      dateOfBirth: "",
       smsOptIn: false,
       emailOptIn: true,
     },
@@ -138,7 +140,7 @@ export default function InterestForm() {
         }
       });
       
-      // Submit to the current page URL - this is how Netlify Forms works
+      // Submit to the interest page URL - this is how Netlify Forms works
       const response = await fetch("/interest", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -148,17 +150,17 @@ export default function InterestForm() {
       if (!response.ok) {
         throw new Error(`Form submission failed: ${response.status}`);
       }
+      
+      // Set submitted state to true
+      setIsSubmitted(true)
+      
+      // Redirect after a delay
+      setTimeout(() => {
+        router.push("/thank-you")
+      }, 2000)
     } catch (error) {
       console.error('Error submitting form:', error);
     }
-
-    // Simulate form submission
-    setIsSubmitted(true)
-
-    // Redirect after a delay
-    setTimeout(() => {
-      router.push("/thank-you")
-    }, 2000)
   }
 
   const onUnderAgeSubmit = async (values: z.infer<typeof underAgeFormSchema>) => {
@@ -182,7 +184,7 @@ export default function InterestForm() {
         }
       });
       
-      // Submit to the current page URL - this is how Netlify Forms works
+      // Submit to the interest page URL - this is how Netlify Forms works
       const response = await fetch("/interest", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -192,17 +194,17 @@ export default function InterestForm() {
       if (!response.ok) {
         throw new Error(`Form submission failed: ${response.status}`);
       }
+      
+      // Set submitted state to true
+      setIsSubmitted(true)
+      
+      // Redirect after a delay
+      setTimeout(() => {
+        router.push("/thank-you-under-21")
+      }, 2000)
     } catch (error) {
       console.error('Error submitting form:', error);
     }
-
-    // Simulate form submission
-    setIsSubmitted(true)
-
-    // Redirect after a delay
-    setTimeout(() => {
-      router.push("/thank-you-under-21")
-    }, 2000)
   }
 
   if (isSubmitted) {
@@ -517,7 +519,7 @@ export default function InterestForm() {
               <div className="max-w-lg mx-auto">
                 <h2 className="text-2xl font-bold mb-4">Under 21 Registration</h2>
                 <p className="text-neutral mb-6">
-                  We have special programs available for those under 21. Please provide your contact information and we'll keep you updated. <span className="text-silver">Our team will reach out to contact you in the future when appropriate opportunities become available.</span>
+                  We have special programs available for those under 21. Please provide your contact information and we'll keep you updated. <span className="text-silver">Our team will reach out when you turn 21 to discuss exclusive opportunities available to you at that time.</span>
                 </p>
                 
                 <Form {...underAgeForm}>
@@ -547,6 +549,23 @@ export default function InterestForm() {
                           <FormControl>
                             <Input placeholder="(123) 456-7890" className="bg-background/50 border-silver/20 focus:border-silver" {...field} />
                           </FormControl>
+                          <FormMessage className="text-red-400" />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={underAgeForm.control}
+                      name="dateOfBirth"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-silver">Date of Birth</FormLabel>
+                          <FormControl>
+                            <Input type="date" className="bg-background/50 border-silver/20 focus:border-silver" {...field} />
+                          </FormControl>
+                          <FormDescription className="text-xs text-neutral">
+                            We'll reach out to you when you turn 21 with exclusive opportunities.
+                          </FormDescription>
                           <FormMessage className="text-red-400" />
                         </FormItem>
                       )}

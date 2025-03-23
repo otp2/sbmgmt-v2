@@ -20,27 +20,27 @@ const faqItems = [
     answer: "We help you maximize promotional opportunities with no risk. After you sign up, our team will verify your information and guide you through the process of accessing exclusive offers from our partner platforms."
   },
   {
-    question: "Is there any cost to join?",
+    question: "Any cost to join?",
     answer: "No. There is absolutely no cost to join SB Management Group. We make our money through partnerships with platforms, not from our members."
   },
   {
-    question: "How long does the verification process take?",
+    question: "Verification process timeline?",
     answer: "The verification process typically takes 1-2 business days. Once verified, you'll receive instructions on how to access exclusive offers."
   },
   {
-    question: "What information do I need to provide?",
+    question: "Information needed?",
     answer: "To get started, we need your full name, state of residence, email address, and phone number. Additional verification information may be required later in the process."
   },
   {
-    question: "How do I get paid?",
-    answer: "Payment methods vary depending on the specific offers you participate in. Our team will provide detailed instructions for each opportunity, but typically payments are made via direct deposit, PayPal, or other electronic payment methods."
+    question: "Payment methods?",
+    answer: "We primarily use Zelle or Venmo for payments. Our team will provide detailed instructions for each opportunity to ensure you receive your payments quickly and securely."
   },
   {
-    question: "Which states do you operate in?",
-    answer: "SB Management Group currently operates in select states where our partner platforms are licensed. During the sign-up process, we'll confirm if your state is eligible."
+    question: "Where do you operate?",
+    answer: "SB Management Group operates in all states. Our services are available nationwide, allowing us to serve members across the entire United States."
   },
   {
-    question: "What if I have more questions?",
+    question: "More questions?",
     answer: "If you have additional questions, please visit our Contact page to get in touch with our support team. We're here to help!"
   }
 ];
