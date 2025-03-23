@@ -35,7 +35,7 @@ export default function Contact() {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     // Log form values
-    console.log(values)
+    console.log("Submitting form with values:", values);
 
     try {
       // Create a FormData object to submit to Netlify
@@ -44,31 +44,43 @@ export default function Contact() {
       // Add form name (required for Netlify Forms)
       formData.append("form-name", "contact");
       
+      // Add bot-field for honeypot (anti-spam)
+      formData.append("bot-field", "");
+      
       // Add all form values
       Object.entries(values).forEach(([key, value]) => {
         formData.append(key, value);
       });
       
-      // Submit to the current page URL - this is how Netlify Forms works
-      const response = await fetch("/contact", {
+      // Convert formData to encoded string for submission
+      const encodedData = new URLSearchParams(formData as any).toString();
+      
+      console.log("Submitting form to Netlify...");
+      
+      // Submit directly to root path - critical for Netlify form handling
+      const response = await fetch("/", {
         method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams(formData as any).toString()
+        headers: { 
+          "Content-Type": "application/x-www-form-urlencoded" 
+        },
+        body: encodedData
       });
       
       if (!response.ok) {
+        console.error(`Form submission error: ${response.status}`);
         throw new Error(`Form submission failed: ${response.status}`);
       }
-
-      // Set submitted state to show success message
-      setIsSubmitted(true)
       
-      // Redirect after a delay (optional)
-      // setTimeout(() => {
-      //   router.push("/thank-you")
-      // }, 2000)
+      console.log("Form submitted successfully");
+      
+      // Wait a moment to ensure Netlify has processed the form submission
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Set submitted state to show success message only after submission is confirmed
+      setIsSubmitted(true);
     } catch (error) {
       console.error('Error submitting form:', error);
+      alert("There was an issue submitting the form. Please try again later.");
     }
   }
 
@@ -122,8 +134,11 @@ export default function Contact() {
                 </div>
               ) : (
                 <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" data-netlify="true" name="contact">
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" method="POST" data-netlify="true" name="contact" netlify-honeypot="bot-field">
                     <input type="hidden" name="form-name" value="contact" />
+                    <div hidden>
+                      <input name="bot-field" />
+                    </div>
                     
                     <FormField
                       control={form.control}

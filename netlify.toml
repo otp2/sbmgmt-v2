@@ -2,26 +2,13 @@
   command = "npm run build"
   publish = ".next"
 
-# Netlify forms settings
+# Basic form processing settings
 [build.processing.html]
   pretty_urls = true
 
-# Handle form submissions
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
-
-# Custom headers
-[[headers]]
-  for = "/*"
-  [headers.values]
-    X-Frame-Options = "DENY"
-    X-XSS-Protection = "1; mode=block"
-    Referrer-Policy = "strict-origin-when-cross-origin"
-    X-Content-Type-Options = "nosniff"
-
-# Next.js specific settings
-[build.environment]
-  NEXT_USE_NETLIFY_EDGE = "true"
-
-# Remove the redirects section as it conflicts with Next.js routing
-# The Next.js plugin handles routing automatically 
+# Ensure all paths route correctly for SPA
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = false 
