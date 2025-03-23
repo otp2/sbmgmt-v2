@@ -34,5 +34,13 @@
       <input name="smsOptIn" type="checkbox" />
       <input name="emailOptIn" type="checkbox" />
     </form>
+
+    <!-- Test form detection -->
+    <form name="contact-test" netlify netlify-honeypot="bot-field" action="/__forms.html" data-netlify="true" hidden>
+      <input type="hidden" name="form-name" value="contact-test" />
+      <input name="name" type="text" />
+      <input name="email" type="email" />
+      <textarea name="message"></textarea>
+    </form>
   </body>
 </html> 

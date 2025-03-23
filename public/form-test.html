@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Netlify Form Test</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        padding: 20px;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+      form {
+        border: 1px solid #ddd;
+        padding: 20px;
+        border-radius: 5px;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+      input, textarea {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+      button {
+        background: #6772e5;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Netlify Form Test</h1>
+    <p>This form submits directly to Netlify's form handler without JavaScript, providing a clean test of your configuration.</p>
+    
+    <form name="contact-test" method="POST" action="/__forms.html" data-netlify="true" netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="contact-test" />
+      <div hidden>
+        <input name="bot-field" />
+      </div>
+      
+      <div>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required />
+      </div>
+      
+      <div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required />
+      </div>
+      
+      <div>
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" required></textarea>
+      </div>
+      
+      <button type="submit">Submit Test Form</button>
+    </form>
+
+    <div style="margin-top: 20px;">
+      <h3>Important: After submission</h3>
+      <ul>
+        <li>You should be redirected back to this page if successful</li>
+        <li>Check your Netlify dashboard under Forms to see the submission</li>
+        <li>If the form doesn't appear in Netlify, it confirms there's an issue with your configuration</li>
+      </ul>
+    </div>
+  </body>
+</html> 
