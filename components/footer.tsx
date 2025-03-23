@@ -75,7 +75,7 @@ export function Footer() {
               © {new Date().getFullYear()} SB Management. All rights reserved.
             </p>
             <p className="text-xs text-neutral mt-2 font-normal">
-              Professional solutions tailored to meet your unique requirements.
+              <span className="text-silver">*</span> Professional solutions tailored to meet your unique requirements.
             </p>
           </div>
         </div>

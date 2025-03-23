@@ -47,8 +47,8 @@ export default function Contact() {
         formData.append(key, value);
       });
       
-      // Submit the form to Netlify - point to the static HTML file
-      const response = await fetch("/__forms.html", {
+      // Submit to the current page URL - this is how Netlify Forms works
+      const response = await fetch("/", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: new URLSearchParams(formData as any).toString()
@@ -59,11 +59,9 @@ export default function Contact() {
       }
     } catch (error) {
       console.error('Error submitting form:', error);
-      // Continue with the success flow even if there's an error
-      // You might want to handle errors differently in production
     }
 
-    // Set form as submitted regardless of API response
+    // Simulate form submission
     setIsSubmitted(true)
   }
 
@@ -104,13 +102,6 @@ export default function Contact() {
           <div className="grid lg:grid-cols-2 gap-10">
             <div className="glass-effect p-8 rounded-xl border border-silver/10 shadow-xl shadow-black/5">
               <h2 className="text-2xl font-bold mb-6">Send Us a Message</h2>
-              
-              {/* Hidden form for Netlify detection */}
-              <form name="contact" data-netlify="true" hidden>
-                <input type="text" name="name" />
-                <input type="email" name="email" />
-                <textarea name="message"></textarea>
-              </form>
               
               {isSubmitted ? (
                 <div className="bg-silver/5 p-8 rounded-lg border border-silver/20 text-center">
@@ -206,8 +197,8 @@ export default function Contact() {
                     <div>
                       <h3 className="font-bold text-xl mb-1">Phone</h3>
                       <p className="text-neutral text-lg mb-2">Monday-Friday, 9am-5pm EST</p>
-                      <a href="tel:6305460465" className="text-silver hover:text-white transition-colors">
-                        (630) 546-0465
+                      <a href="tel:5551234567" className="text-silver hover:text-white transition-colors">
+                        (555) 123-4567
                       </a>
                     </div>
                   </div>

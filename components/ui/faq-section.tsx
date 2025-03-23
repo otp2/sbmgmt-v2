@@ -24,20 +24,20 @@ const faqItems = [
     answer: "No. There is absolutely no cost to join SB Management Group. We make our money through partnerships with platforms, not from our members."
   },
   {
-    question: "Verification time?",
+    question: "How long does the verification process take?",
     answer: "The verification process typically takes 1-2 business days. Once verified, you'll receive instructions on how to access exclusive offers."
   },
   {
-    question: "Required information?",
+    question: "What information do I need to provide?",
     answer: "To get started, we need your full name, state of residence, email address, and phone number. Additional verification information may be required later in the process."
   },
   {
     question: "How do I get paid?",
-    answer: "Payment methods include Zelle and Venmo. Our team will provide detailed instructions for each opportunity, and you'll be able to select your preferred payment method during the process."
+    answer: "Payment methods vary depending on the specific offers you participate in. Our team will provide detailed instructions for each opportunity, but typically payments are made via direct deposit, PayPal, or other electronic payment methods."
   },
   {
-    question: "Where do you operate?",
-    answer: "SB Management Group operates in all 50 US states. Our nationwide network of partner platforms allows us to serve clients across the entire United States."
+    question: "Which states do you operate in?",
+    answer: "SB Management Group currently operates in select states where our partner platforms are licensed. During the sign-up process, we'll confirm if your state is eligible."
   },
   {
     question: "What if I have more questions?",
@@ -54,21 +54,21 @@ function FAQ() {
       <div className="absolute top-0 left-0 w-full h-px bg-accent-gradient opacity-20"></div>
       
       <div className="container mx-auto px-4">
-        <div className="flex flex-col lg:grid lg:grid-cols-2 gap-10">
+        <div className="grid lg:grid-cols-2 gap-10">
           <div className="flex gap-10 flex-col">
-            <div className="flex gap-4 flex-col text-center lg:text-left">
-              <div className="flex justify-center lg:justify-start">
+            <div className="flex gap-4 flex-col">
+              <div>
                 <Badge variant="outline" className="border-silver/30 text-silver">FAQ</Badge>
               </div>
               <div className="flex gap-2 flex-col">
-                <h4 className="heading-2 tracking-tighter max-w-xl mx-auto lg:mx-0 text-center lg:text-left">
+                <h4 className="heading-2 tracking-tighter max-w-xl text-left">
                   Frequently Asked <span className="gradient-text">Questions</span>
                 </h4>
-                <p className="text-lg max-w-xl lg:max-w-lg leading-relaxed tracking-tight text-neutral mx-auto lg:mx-0 text-center lg:text-left">
+                <p className="text-lg max-w-xl lg:max-w-lg leading-relaxed tracking-tight text-neutral text-left">
                   Find answers to common questions about SB Management and our services. Can't find what you're looking for? Reach out to our team directly.
                 </p>
               </div>
-              <div className="flex justify-center lg:justify-start">
+              <div>
                 <Button 
                   className="gap-4 bg-transparent border-silver/30 hover:border-silver hover:text-silver transition-colors" 
                   variant="outline"

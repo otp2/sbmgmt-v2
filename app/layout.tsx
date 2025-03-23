@@ -20,30 +20,21 @@ const montserrat = Montserrat({
 })
 
 export const metadata: Metadata = {
-  title: "SB Management | Professional Solutions & Management Services",
-  description: "SB Management offers premium professional solutions tailored to meet your unique requirements. Our streamlined services provide reliable expertise for business growth and success.",
+  title: "SB Management",
+  description: "Unlock Premium Solutions. Professional. Streamlined.",
   generator: 'v0.dev',
   metadataBase: new URL('https://sbmgmt.co'), // Updated to actual domain
-  keywords: ["management services", "professional solutions", "business services", "premium solutions", "business management"],
-  authors: [{ name: "SB Management Group" }],
-  creator: "SB Management Group",
-  publisher: "SB Management Group",
-  formatDetection: {
-    telephone: true,
-    email: true,
-    address: true,
-  },
   openGraph: {
-    title: "SB Management | Premium Professional Solutions",
-    description: "Professional solutions tailored to meet your unique requirements. Unlock premium services designed for your success.",
+    title: "SB Management",
+    description: "Professional solutions tailored to meet your unique requirements.",
     url: 'https://sbmgmt.co', // Updated to actual domain
     siteName: 'SB Management',
     images: [
       {
-        url: '/og-image.png', // Updated to use the new Open Graph image
-        width: 1200,
-        height: 630,
-        alt: 'SB Management Professional Solutions',
+        url: '/main-icon.png', // Using the cleaner main icon
+        width: 512,
+        height: 512,
+        alt: 'SB Management',
       },
     ],
     locale: 'en_US',
@@ -51,11 +42,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'SB Management | Premium Professional Solutions',
+    title: 'SB Management',
     description: 'Professional solutions tailored to meet your unique requirements.',
-    images: ['/og-image.png'], // Updated to use the new Open Graph image
-    creator: '@sbmanagement',
-    site: '@sbmanagement',
+    images: ['/main-icon.png'], // Using the cleaner main icon
   },
   icons: {
     icon: [

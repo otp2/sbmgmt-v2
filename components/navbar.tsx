@@ -2,14 +2,13 @@
 
 import type React from "react"
 import { useEffect, useState } from "react"
-import { usePathname } from "next/navigation"
 import { motion } from "framer-motion"
 import Link from "next/link"
 import { Home, HelpCircle, FileText, Phone, Menu } from "lucide-react"
 import { cn } from "@/lib/utils"
 import Logo from "./logo"
 import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetHeader, SheetClose } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetHeader } from "@/components/ui/sheet"
 
 interface NavItem {
   name: string
@@ -45,8 +44,6 @@ export function NavBar() {
   const [isMobile, setIsMobile] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [mounted, setMounted] = useState(false)
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const pathname = usePathname()
 
   useEffect(() => {
     setMounted(true)
@@ -68,17 +65,6 @@ export function NavBar() {
       window.removeEventListener("scroll", handleScroll)
     }
   }, [])
-
-  // Set active tab based on current pathname
-  useEffect(() => {
-    if (pathname) {
-      const currentPath = pathname === "/" ? "Home" : 
-                          pathname.includes("/interest") ? "Interest Form" : 
-                          pathname.includes("/faq") ? "FAQ" : 
-                          pathname.includes("/contact") ? "Contact" : "Home"
-      setActiveTab(currentPath)
-    }
-  }, [pathname])
 
   // Animation variants for navbar items
   const navbarVariants = {
@@ -167,10 +153,10 @@ export function NavBar() {
           </Button>
         </motion.div>
 
-        <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+        <Sheet>
           <SheetTrigger asChild className="md:hidden">
             <motion.div variants={itemVariants}>
-              <Button variant="ghost" size="icon" className="text-foreground hover:text-silver transition-colors">
+              <Button variant="ghost" size="icon" className="relative">
                 <Menu className="h-5 w-5 transition-transform duration-300 hover:scale-110" />
                 <span className="sr-only">Open menu</span>
               </Button>
@@ -187,35 +173,22 @@ export function NavBar() {
               {navItems.map((item) => {
                 const Icon = item.icon
                 return (
-                  <SheetClose asChild key={item.name}>
-                    <Link
-                      href={item.url}
-                      className={cn(
-                        "flex items-center gap-2 font-medium group transition-transform duration-300 hover:translate-x-1",
-                        activeTab === item.name ? "text-silver" : "text-foreground/80 hover:text-silver"
-                      )}
-                      onClick={() => {
-                        setActiveTab(item.name)
-                        setIsMenuOpen(false)
-                      }}
-                    >
-                      <Icon size={18} className={cn(
-                        "transition-colors duration-300",
-                        activeTab === item.name ? "text-accent" : "group-hover:text-accent"
-                      )} />
-                      <span>{item.name}</span>
-                    </Link>
-                  </SheetClose>
+                  <Link
+                    key={item.name}
+                    href={item.url}
+                    className="flex items-center gap-2 text-foreground/80 hover:text-silver font-medium group transition-transform duration-300 hover:translate-x-1"
+                  >
+                    <Icon size={18} className="transition-colors duration-300 group-hover:text-accent" />
+                    <span>{item.name}</span>
+                  </Link>
                 )
               })}
-              <SheetClose asChild>
-                <Button asChild className="mt-4 bg-button-gradient font-medium relative overflow-hidden group">
-                  <Link href="/interest">
-                    <span className="relative z-10">Get Started</span>
-                    <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
-                  </Link>
-                </Button>
-              </SheetClose>
+              <Button asChild className="mt-4 bg-button-gradient font-medium relative overflow-hidden group">
+                <Link href="/interest">
+                  <span className="relative z-10">Get Started</span>
+                  <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
+                </Link>
+              </Button>
             </div>
           </SheetContent>
         </Sheet>

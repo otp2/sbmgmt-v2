@@ -21,6 +21,24 @@ const nextConfig = {
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
   },
+  // Add headers for Netlify Forms
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: '*',
+          },
+          {
+            key: 'Access-Control-Allow-Methods',
+            value: 'GET,POST,OPTIONS',
+          }
+        ],
+      },
+    ]
+  },
 }
 
 mergeConfig(nextConfig, userConfig)

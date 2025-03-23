@@ -29,27 +29,17 @@ export function FeatureSteps({
 }: FeatureStepsProps) {
   // Always start with the first step (index 0)
   const [activeStep, setActiveStep] = useState(0)
-  const [imagesLoaded, setImagesLoaded] = useState(false)
   const sectionRef = useRef(null)
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 })
   
-  // Preload all images when component mounts
+  // Auto advance carousel every 5 seconds
   useEffect(() => {
-    const imagePromises = features.map(feature => {
-      return new Promise<void>((resolve, reject) => {
-        const img = new window.Image()
-        img.src = feature.image
-        img.onload = () => resolve()
-        img.onerror = () => reject()
-      })
-    })
+    const timer = setInterval(() => {
+      setActiveStep(current => (current + 1) % features.length)
+    }, 5000)
     
-    Promise.all(imagePromises)
-      .then(() => setImagesLoaded(true))
-      .catch(err => console.error("Error preloading images:", err))
-  }, [features])
-  
-  // Auto advance has been removed - no more auto scrolling
+    return () => clearInterval(timer)
+  }, [features.length])
   
   // Handle navigation to next step
   const goToNextStep = () => {
@@ -69,32 +59,19 @@ export function FeatureSteps({
   // Variants for smoother animations
   const slideVariants = {
     enter: (direction: number) => ({
-      x: direction > 0 ? 100 : -100,
+      x: direction > 0 ? 80 : -80,
       opacity: 0,
-      scale: 0.95,
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0
+      scale: 0.95
     }),
     center: {
       x: 0,
       opacity: 1,
-      scale: 1,
-      zIndex: 1,
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0
+      scale: 1
     },
     exit: (direction: number) => ({
-      x: direction < 0 ? 100 : -100,
+      x: direction < 0 ? 80 : -80,
       opacity: 0,
-      scale: 0.95,
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0
+      scale: 0.95
     })
   }
 
@@ -105,7 +82,7 @@ export function FeatureSteps({
   useEffect(() => {
     const newDirection = activeStep > page ? 1 : -1
     setPage([activeStep, newDirection])
-  }, [activeStep])
+  }, [activeStep, page])
 
   // Section animation variants
   const sectionVariants = {
@@ -168,34 +145,20 @@ export function FeatureSteps({
             className="relative rounded-xl overflow-hidden glass-effect min-h-[250px]"
             variants={itemVariants}
           >            
-            {/* Preload all images */}
-            <div className="hidden">
-              {features.map((feature) => (
-                <Image
-                  key={`preload-${feature.step}`}
-                  src={feature.image}
-                  alt="preload"
-                  width={1}
-                  height={1}
-                  priority
-                />
-              ))}
-            </div>
-            
             <AnimatePresence initial={false} custom={direction} mode="wait">
               {features.map((feature, index) => 
                 index === activeStep && (
                   <motion.div
-                    key={`mobile-image-${feature.step}`}
+                    key={feature.step}
                     custom={direction}
                     variants={slideVariants}
                     initial="enter"
                     animate="center"
                     exit="exit"
                     transition={{
-                      opacity: { duration: 0.3 },
-                      x: { type: "spring", stiffness: 350, damping: 35 },
-                      scale: { duration: 0.3 }
+                      opacity: { duration: 0.4 },
+                      x: { type: "spring", stiffness: 300, damping: 30 },
+                      scale: { duration: 0.4 }
                     }}
                     className="flex items-center justify-center w-full h-full py-6"
                   >
@@ -223,10 +186,10 @@ export function FeatureSteps({
           >
             <button 
               onClick={goToPrevStep}
-              className="w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors shadow-lg"
+              className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
               aria-label="Previous step"
             >
-              <ChevronLeft className="w-6 h-6" />
+              <ChevronLeft className="w-5 h-5" />
             </button>
             
             <div className="flex space-x-2">
@@ -245,57 +208,55 @@ export function FeatureSteps({
             
             <button 
               onClick={goToNextStep}
-              className="w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors shadow-lg"
+              className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
               aria-label="Next step"
             >
-              <ChevronRight className="w-6 h-6" />
+              <ChevronRight className="w-5 h-5" />
             </button>
           </motion.div>
           
           {/* Mobile step text */}
           <motion.div variants={itemVariants}>
-            <AnimatePresence mode="wait">
-              {features.map((feature, index) => 
-                index === activeStep && (
-                  <motion.div
-                    key={`mobile-text-${feature.step}`}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.4 }}
-                    className="p-4 glass-effect rounded-xl"
-                  >
-                    <div className="flex items-center gap-4 mb-3">
-                      <div className={cn(
-                        "w-10 h-10 rounded-full bg-accent-gradient flex items-center justify-center relative shrink-0",
-                        "shadow-lg shadow-accent/20"
-                      )}>
-                        {feature.icon}
-                        <div className="absolute inset-0 rounded-full bg-white/30 animate-ping-slow opacity-0"></div>
-                      </div>
-                      <h3 className="text-xl font-heading font-semibold">
-                        {feature.title}
-                      </h3>
+            {features.map((feature, index) => 
+              index === activeStep && (
+                <motion.div
+                  key={feature.step}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.4 }}
+                  className="p-4 glass-effect rounded-xl"
+                >
+                  <div className="flex items-center gap-4 mb-3">
+                    <div className={cn(
+                      "w-10 h-10 rounded-full bg-accent-gradient flex items-center justify-center relative shrink-0",
+                      "shadow-lg shadow-accent/20"
+                    )}>
+                      {feature.icon}
+                      <div className="absolute inset-0 rounded-full bg-white/30 animate-ping-slow opacity-0"></div>
                     </div>
-                    <p className="text-neutral font-normal">
-                      {feature.content}
-                    </p>
-                  </motion.div>
-                )
-              )}
-            </AnimatePresence>
+                    <h3 className="text-xl font-heading font-semibold">
+                      {feature.title}
+                    </h3>
+                  </div>
+                  <p className="text-neutral font-normal">
+                    {feature.content}
+                  </p>
+                </motion.div>
+              )
+            )}
           </motion.div>
         </div>
 
         {/* Desktop version (side by side) */}
-        <div className="hidden lg:grid lg:grid-cols-2 gap-10">
+        <div className="hidden lg:grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           <motion.div 
             className="order-2 space-y-8"
             variants={itemVariants}
           >
             {features.map((feature, index) => (
               <motion.div
-                key={`desktop-text-${feature.step}`}
+                key={feature.step}
                 className={cn(
                   "flex items-start gap-6 p-6 rounded-xl transition-all duration-300 cursor-pointer",
                   index === activeStep ? "glass-effect" : "hover:bg-white/5"
@@ -330,50 +291,17 @@ export function FeatureSteps({
                 </div>
               </motion.div>
             ))}
-            
-            {/* Desktop navigation arrows */}
-            <div className="flex justify-center space-x-4 mt-6">
-              <button 
-                onClick={goToPrevStep}
-                className="w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors shadow-lg"
-                aria-label="Previous step"
-              >
-                <ChevronLeft className="w-6 h-6" />
-              </button>
-              <button 
-                onClick={goToNextStep}
-                className="w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors shadow-lg"
-                aria-label="Next step"
-              >
-                <ChevronRight className="w-6 h-6" />
-              </button>
-            </div>
           </motion.div>
 
-          {/* Desktop version image carousel */}
           <motion.div 
-            className="order-1 relative rounded-xl overflow-hidden"
+            className="order-1 relative"
             variants={itemVariants}
-          >       
-            {/* Preload all images */}
-            <div className="hidden">
-              {features.map((feature) => (
-                <Image
-                  key={`preload-desktop-${feature.step}`}
-                  src={feature.image}
-                  alt="preload"
-                  width={1}
-                  height={1}
-                  priority
-                />
-              ))}
-            </div>
-                 
+          >            
             <AnimatePresence initial={false} custom={direction} mode="wait">
               {features.map((feature, index) => 
                 index === activeStep && (
                   <motion.div
-                    key={`desktop-image-${feature.step}`}
+                    key={feature.step}
                     className="rounded-xl overflow-hidden glass-effect h-[450px] flex items-center justify-center relative"
                     custom={direction}
                     variants={slideVariants}
@@ -381,9 +309,9 @@ export function FeatureSteps({
                     animate="center"
                     exit="exit"
                     transition={{
-                      opacity: { duration: 0.3 },
-                      x: { type: "spring", stiffness: 350, damping: 35 },
-                      scale: { duration: 0.3 }
+                      opacity: { duration: 0.4 },
+                      x: { type: "spring", stiffness: 300, damping: 30 },
+                      scale: { duration: 0.4 }
                     }}
                   >
                     <div className="relative w-[90%] h-[90%] flex items-center justify-center">

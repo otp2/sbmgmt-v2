@@ -1,14 +1,7 @@
 {
-  "name": "SB Management | Professional Solutions",
-  "short_name": "SB Management",
-  "description": "Professional solutions tailored to meet your unique requirements",
+  "name": "SB Management",
+  "short_name": "SB Mgmt",
   "icons": [
-    {
-      "src": "/android-chrome-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
     {
       "src": "/android-chrome-512x512.png",
       "sizes": "512x512",
@@ -18,45 +11,13 @@
     {
       "src": "/favicon-196x196.png",
       "sizes": "196x196",
-      "type": "image/png"
-    },
-    {
-      "src": "/favicon-128x128.png",
-      "sizes": "128x128",
-      "type": "image/png"
-    },
-    {
-      "src": "/favicon-96x96.png",
-      "sizes": "96x96",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     }
   ],
-  "theme_color": "#060a0f",
-  "background_color": "#060a0f",
+  "theme_color": "#1e2024",
+  "background_color": "#1e2024",
   "start_url": "/",
-  "scope": "/",
   "display": "standalone",
-  "orientation": "portrait",
-  "lang": "en-US",
-  "dir": "ltr",
-  "categories": ["business", "professional", "management"],
-  "related_applications": [],
-  "prefer_related_applications": false,
-  "shortcuts": [
-    {
-      "name": "Contact Us",
-      "url": "/contact",
-      "description": "Get in touch with our team"
-    },
-    {
-      "name": "Register Interest",
-      "url": "/interest",
-      "description": "Express interest in our services"
-    },
-    {
-      "name": "FAQ",
-      "url": "/faq",
-      "description": "Frequently asked questions"
-    }
-  ]
+  "orientation": "portrait"
 } 

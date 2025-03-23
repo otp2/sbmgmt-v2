@@ -62,7 +62,7 @@ export default function Home() {
           <div className="max-w-4xl mx-auto text-center">
             <div className="animate-fade-in-up opacity-0" style={{ animationFillMode: "forwards", animationDelay: "0.1s" }}>
               <h2 className="heading-2 mb-3">
-                Ready for <span className="gradient-text">Professional Excellence?</span>
+                Ready for <span className="gradient-text gradient-text-underline">Professional Excellence?</span>
               </h2>
             </div>
             
