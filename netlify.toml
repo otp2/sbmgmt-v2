@@ -19,10 +19,9 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     X-Content-Type-Options = "nosniff"
 
-# Redirects
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-  force = false
-  conditions = {Role = ["anonymous"]} 
+# Next.js specific settings
+[build.environment]
+  NEXT_USE_NETLIFY_EDGE = "true"
+
+# Remove the redirects section as it conflicts with Next.js routing
+# The Next.js plugin handles routing automatically 
