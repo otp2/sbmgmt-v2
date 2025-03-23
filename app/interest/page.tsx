@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { AlertCircle, ArrowRight, UserCheck, CheckCircle, Calendar } from "lucide-react"
 import { StarBorder } from "@/components/ui/star-border"
+import { submitToNetlify } from "@/netlify/forms-helper"
 
 const states = [
   "Alabama",
@@ -121,21 +122,9 @@ export default function InterestForm() {
     // In a real application, you would submit this data to your backend or Netlify Forms
     console.log(values)
 
-    // Submit to Netlify Forms using modern approach
+    // Submit to Netlify Forms using helper function
     try {
-      // Convert all values to strings to ensure compatibility with URLSearchParams
-      const formValues = Object.fromEntries(
-        Object.entries(values).map(([key, value]) => [key, String(value)])
-      );
-      
-      const response = await fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({
-          'form-name': 'interest-form-over-21',
-          ...formValues
-        }).toString()
-      });
+      const response = await submitToNetlify('interest-form-over-21', values);
       
       if (response.ok) {
         // Simulate form submission
@@ -157,21 +146,9 @@ export default function InterestForm() {
     // In a real application, you would submit this data to your backend or Netlify Forms
     console.log(values)
 
-    // Submit to Netlify Forms using modern approach
+    // Submit to Netlify Forms using helper function
     try {
-      // Convert all values to strings to ensure compatibility with URLSearchParams
-      const formValues = Object.fromEntries(
-        Object.entries(values).map(([key, value]) => [key, String(value)])
-      );
-      
-      const response = await fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({
-          'form-name': 'interest-form-under-21',
-          ...formValues
-        }).toString()
-      });
+      const response = await submitToNetlify('interest-form-under-21', values);
       
       if (response.ok) {
         // Simulate form submission

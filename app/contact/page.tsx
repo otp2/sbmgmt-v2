@@ -12,6 +12,7 @@ import { Mail, Phone, Calendar, ArrowRight } from "lucide-react"
 import { StarBorder } from "@/components/ui/star-border"
 import Link from "next/link"
 import Script from 'next/script'
+import { submitToNetlify } from "@/netlify/forms-helper"
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -35,21 +36,9 @@ export default function Contact() {
     // In a real application, you would submit this data to your backend or Netlify Forms
     console.log(values)
 
-    // Submit to Netlify Forms using modern approach
+    // Submit to Netlify Forms using helper function
     try {
-      // Convert form values to string to ensure compatibility with URLSearchParams
-      const formValues = Object.fromEntries(
-        Object.entries(values).map(([key, value]) => [key, String(value)])
-      );
-      
-      const response = await fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({
-          'form-name': 'contact-form',
-          ...formValues
-        }).toString()
-      });
+      const response = await submitToNetlify('contact-form', values);
       
       if (response.ok) {
         // Simulate form submission

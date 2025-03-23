@@ -1,0 +1,2 @@
+# This file ensures that the netlify/functions directory is included in git
+# It can be deleted once you have at least one function file in this directory 
