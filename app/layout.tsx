@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     type: 'website',
   },
   verification: {
-    google: 'google-site-verification-code', // Update with actual verification code if available
+    google: 'Yrjv8jcocZ6gu627XszsbbRbBcdybpfgs6c6DfkcJKk',
   },
   alternates: {
     canonical: 'https://sbmgmt.co',

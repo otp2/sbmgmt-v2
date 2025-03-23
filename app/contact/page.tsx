@@ -236,10 +236,16 @@ export default function Contact() {
 
           <h2 className="heading-2 mt-10 mb-6">Schedule a Consultation</h2>
           <div 
-            className="calendly-inline-widget" 
-            data-url="https://calendly.com/sbmgservice2024/30min" 
-            style={{ minWidth: '320px', height: '700px' }} 
-          />
+            className="w-full rounded-xl overflow-hidden border border-silver/10 glass-effect"
+            style={{ height: "600px" }}
+          >
+            <iframe
+              src="https://calendly.com/sbmgservice2024/30min"
+              width="100%"
+              height="100%"
+              frameBorder="0"
+            ></iframe>
+          </div>
         </div>
       </div>
     </div>
